@@ -1,4 +1,5 @@
 import requests
+from requests.exceptions import RequestException
 from dotenv import load_dotenv
 import os
 from pprint import pprint
@@ -7,14 +8,28 @@ load_dotenv() # Checks
 
 key = os.getenv("aq")
 
+if not key:
+    raise ValueError("API key not found!!")
+
 header = {"X-API-Key":key}
 
-data = requests.get("https://api.openaq.org/v3/locations",headers=header)
+endpoints = ['locations','sensors']
 
-data.raise_for_status()
+try:
+    data_1 = requests.get(f"https://api.openaq.org/v3/{endpoints[0]}",headers=header)
+    data_1.raise_for_status()
 
-locations = data.json()
+    data_2 = requests.get(f"https://api.openaq.org/v3/{endpoints[1]}",headers=header)
+    data_2.raise_for_status()
+
+except RequestException as e:
+    print(f"Something went wrong with request exception {e}")
+
+
+
+locations = data_1.json()
 
 print("Successful response!!")
 
-pprint(locations)
+pprint(locations["results"][0])
+
