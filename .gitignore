@@ -1,0 +1,5 @@
+# Environment vars
+.env 
+
+# Python
+__Pycache__
