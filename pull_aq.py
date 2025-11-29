@@ -22,14 +22,13 @@ try:
     data_2 = requests.get(f"https://api.openaq.org/v3/{endpoints[1]}",headers=header)
     data_2.raise_for_status()
 
+    print("Successful response!!")
+
 except RequestException as e:
-    print(f"Something went wrong with request exception {e}")
-
-
+    raise
+    
 
 locations = data_1.json()
+locations.keys
 
-print("Successful response!!")
-
-pprint(locations["results"][0])
-
+sensors = data_2.json()
